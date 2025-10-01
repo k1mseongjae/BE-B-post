@@ -1,6 +1,9 @@
 package edu.causwict.restapi.controller;
 
+import java.util.Map;
+
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,8 +22,11 @@ public class PostController {
 
 	// Create
 	@PostMapping
-	public Post create() {
-		Post created = postService.create("test", "test");
+	public Post create(@RequestBody Map<String, Object> param) {
+		String title = (String) param.get("title");
+		String content = (String) param.get("content");
+		Post created = postService.create(title, content);
+
 		return created;
 	}
 }
