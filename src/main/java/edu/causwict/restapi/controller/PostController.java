@@ -2,15 +2,11 @@ package edu.causwict.restapi.controller;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.List;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
 
 import edu.causwict.restapi.entity.Post;
 import edu.causwict.restapi.service.PostService;
@@ -46,5 +42,11 @@ public class PostController {
         // 그렇지 않으면 404 반환
         return updated.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    // Read (List)
+    @GetMapping // GET 메서드로 /api/posts 요청을 처리
+    public List<Post> list() {
+        return postService.findAll();
     }
 }

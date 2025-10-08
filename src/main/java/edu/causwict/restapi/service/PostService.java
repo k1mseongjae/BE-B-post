@@ -4,7 +4,9 @@ import org.springframework.stereotype.Service;
 
 import edu.causwict.restapi.entity.Post;
 import edu.causwict.restapi.repository.InMemoryPostRepository;
+
 import java.util.Optional;
+import java.util.List;
 
 @Service
 public class PostService {
@@ -36,5 +38,10 @@ public class PostService {
         } else {
             return Optional.empty(); // 게시글이 없으면 비어있는 optional 반환
         }
+    }
+
+    // 모든 게시글을 조회하는 로직 추가
+    public List<Post> findAll() {
+        return postRepository.findAll();
     }
 }
