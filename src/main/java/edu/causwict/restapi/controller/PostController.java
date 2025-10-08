@@ -1,5 +1,6 @@
 package edu.causwict.restapi.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,15 @@ public class PostController {
 
 		return created;
 	}
+
+    // Read (List & Search)
+    @GetMapping
+    public List<Post> list(@RequestParam(required = false) String keyword) {
+        if (keyword != null) {
+            return postService.searchByTitle(keyword); // 키워드가 있으면 검색
+        }
+        return null; // 키워드가 없으면 null 반환
+    }
 
     // 이 컨트롤러 내에서 IllegalArgumentException이 발생하면 이 메서드가 처리
     @ExceptionHandler(IllegalArgumentException.class)
