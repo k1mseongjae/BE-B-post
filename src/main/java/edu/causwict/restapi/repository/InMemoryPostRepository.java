@@ -3,6 +3,7 @@ package edu.causwict.restapi.repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -27,5 +28,12 @@ public class InMemoryPostRepository {
 	public List<Post> findAll() {
 		return new ArrayList<>(store.values());
 	}
+
+    // 제목으로 Post를 찾는 메서드 추가
+    public Optional<Post> findByTitle(String title) {
+        return store.values().stream()
+                .filter(post -> post.getTitle().equals(title))
+                .findAny();
+    }
 
 }

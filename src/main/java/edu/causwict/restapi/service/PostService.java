@@ -19,10 +19,21 @@ public class PostService {
         if (title == null || title.trim().isEmpty()) {
             throw new IllegalArgumentException("Title cannot be empty.");
         }
+        // 제목 길이에 대한 조건 : 30자 이하
+        if (title.length() > 30) {
+            throw new IllegalArgumentException("Title cannot exceed 30 characters.");
+        }
+    }
+    // 제목 중복 검사
+    private void validateDuplicateTitle(String title) {
+        postRepository.findByTitle(title).ifPresent(p -> {
+            throw new IllegalArgumentException("A post with this title already exists.");
+        });
     }
 
 	public Post create(String title, String content) {
         validateTitle(title);
+        validateDuplicateTitle(title);
 		Post post = new Post(null, title, content);
 		return postRepository.save(post);
 	}
