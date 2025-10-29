@@ -8,8 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.http.ResponseEntity;
-
 import edu.causwict.restapi.entity.Post;
 import edu.causwict.restapi.service.PostService;
 
@@ -49,10 +47,12 @@ public class PostController {
     // Read (List & Search)
     @GetMapping
     public List<Post> list(@RequestParam(required = false) String keyword) {
-        if (keyword != null) {
-            return postService.searchByTitle(keyword); // 키워드가 있으면 검색
+        if (keyword != null && !keyword.isEmpty()) {
+            // 키워드가 있으면 검색
+            return postService.searchByTitle(keyword);
         }
-        return null; // 키워드가 없으면 null 반환
+        // 키워드가 없으면(null이거나 비어있으면) 전체 목록 반환
+        return postService.findAll();
     }
 
     // 이 컨트롤러 내에서 IllegalArgumentException이 발생하면 이 메서드가 처리
@@ -61,9 +61,4 @@ public class PostController {
         return ResponseEntity.badRequest().body(e.getMessage());
     }
 
-    // Read (List)
-    @GetMapping // GET 메서드로 /api/posts 요청을 처리
-    public List<Post> list() {
-        return postService.findAll();
-    }
 }
