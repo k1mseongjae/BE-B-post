@@ -6,10 +6,9 @@ import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.*;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
 
 import edu.causwict.restapi.entity.Post;
 import edu.causwict.restapi.service.PostService;
@@ -60,5 +59,11 @@ public class PostController {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException e) {
         return ResponseEntity.badRequest().body(e.getMessage());
+    }
+
+    // Read (List)
+    @GetMapping // GET 메서드로 /api/posts 요청을 처리
+    public List<Post> list() {
+        return postService.findAll();
     }
 }
