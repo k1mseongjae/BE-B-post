@@ -1,12 +1,11 @@
 package edu.causwict.restapi.controller;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,5 +45,20 @@ public class PostController {
         // 그렇지 않으면 404 반환
         return updated.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    // Read (List & Search)
+    @GetMapping
+    public List<Post> list(@RequestParam(required = false) String keyword) {
+        if (keyword != null) {
+            return postService.searchByTitle(keyword); // 키워드가 있으면 검색
+        }
+        return null; // 키워드가 없으면 null 반환
+    }
+
+    // 이 컨트롤러 내에서 IllegalArgumentException이 발생하면 이 메서드가 처리
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
 }
